@@ -9,11 +9,6 @@ lose = font1.render('YOU LOSE!', True, (180, 0, 0))
  
 font2 = font.Font(None, 36)
  
-#фоновая музыка
-mixer.init()
-mixer.music.load('space.ogg')
-mixer.music.play()
-fire_sound = mixer.Sound('fire.ogg')
  
 # нам нужны такие картинки:
 img_back = "galaxy.jpg" # фон игры
@@ -60,3 +55,24 @@ class Player(GameSprite):
     def fire(self):
         bullet = Bullet(img_bullet, self.rect.centerx, self.rect.top, 15, 20, -15)
         bullets.add(bullet)
+ 
+# класс спрайта-врага   
+class Enemy(GameSprite):
+    # движение врага
+    def update(self):
+        self.rect.y += self.speed
+        global lost
+        # исчезает, если дойдет до края экрана
+        if self.rect.y > win_height:
+            self.rect.x = randint(80, win_width - 80)
+            self.rect.y = 0
+            lost = lost + 1
+ 
+# класс спрайта-пули   
+class Bullet(GameSprite):
+    # движение врага
+    def update(self):
+        self.rect.y += self.speed
+        # исчезает, если дойдет до края экрана
+        if self.rect.y < 0:
+            self.kill()
