@@ -31,10 +31,10 @@ class Player(GameSprite):
     # метод для управления спрайтом стрелками клавиатуры
     def update(self):
         keys = key.get_pressed()
-        if keys[K_LEFT] and self.rect.x > 5:
-            self.rect.x -= self.speed
-        if keys[K_RIGHT] and self.rect.x < win_width - 80:
-            self.rect.x += self.speed
+        if keys[K_LEFT] and self.rect.y > 5:
+            self.rect.y -= self.speed
+        if keys[K_RIGHT] and self.rect.y < win_height - 80:
+            self.rect.y += self.speed
   # метод "выстрел" (используем место игрока, чтобы создать там пулю)
     def fire(self):
         bullet = Bullet(img_bullet, self.rect.centerx, self.rect.top, 15, 20, -15)
@@ -48,19 +48,15 @@ class Enemy(GameSprite):
         global lost
         # исчезает, если дойдет до края экрана
         if self.rect.y > win_height:
-            self.rect.x = randint(80, win_width - 80)
+            self.rect.y = randint(80, win_width - 80)
             self.rect.y = 0
             lost = lost + 1
- 
-# класс спрайта-пули   
-class Bullet(GameSprite):
-    # движение врага
-    def update(self):
-        self.rect.y += self.speed
-        # исчезает, если дойдет до края экрана
-        if self.rect.y < 0:
-            self.kill()
- 
+
+
+left_r = Player('ruka1.png', 10, 10, 85, 130,5)
+right_r = Player('ruka2.png', 650, 10, 100, 130,5)
+ball = GameSprite('pelmenball.png', 200,200,50,20,2)
+
 game = True
 while game:
     window.blit(background, (0,0))
@@ -69,7 +65,14 @@ while game:
         if e.type == QUIT:
             game = False
 
+    left_r.reset()
+    right_r.reset()
+    ball.reset()
 
     display.update()
     clock.tick()
+
+
+
+    
 
