@@ -1,28 +1,13 @@
 from pygame import *
-from random import randint
-# подгружаем отдельно функции для работы со шрифтом
-font.init()
-font1 = font.SysFont("Arial", 80)
-win = font1.render('YOU WIN!', True, (255, 255, 255))
-lose = font1.render('YOU LOSE!', True, (180, 0, 0))
- 
- 
-font2 = font.Font(None, 36)
- 
- 
-# нам нужны такие картинки:
-img_back = "galaxy.jpg" # фон игры
- 
-img_bullet = "bullet.png" # пуля
-img_hero = "rocket.png" # герой
-img_enemy = "ufo.png" # враг
- 
-score = 0 # сбито кораблей
-goal = 10 # столько кораблей нужно сбить для победы
-lost = 0 # пропущено кораблей
-max_lost = 3 # проиграли, если пропустили столько
- 
-# класс-родитель для других спрайтов
+win_width = 700
+
+win_height = 500
+display.set_caption("Shooter")
+window = display.set_mode((win_width, win_height))
+background = transform.scale(image.load("background.jpg"), (win_width, win_height))
+
+clock = time.Clock()
+
 class GameSprite(sprite.Sprite):
   # конструктор класса
     def __init__(self, player_image, player_x, player_y, size_x, size_y, player_speed):
@@ -41,8 +26,7 @@ class GameSprite(sprite.Sprite):
   # метод, отрисовывающий героя на окне
     def reset(self):
         window.blit(self.image, (self.rect.x, self.rect.y))
- 
-# класс главного игрока
+
 class Player(GameSprite):
     # метод для управления спрайтом стрелками клавиатуры
     def update(self):
@@ -76,3 +60,16 @@ class Bullet(GameSprite):
         # исчезает, если дойдет до края экрана
         if self.rect.y < 0:
             self.kill()
+ 
+game = True
+while game:
+    window.blit(background, (0,0))
+
+    for e in event.get():
+        if e.type == QUIT:
+            game = False
+
+
+    display.update()
+    clock.tick()
+
